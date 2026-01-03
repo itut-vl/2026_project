@@ -20,7 +20,8 @@ from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.base_open, name='base'),
-    path('test',views.test_open, name='test'),
-
+    path('',views.dashbord_open, name='dashbord'),
+    path('item_register/',views.item_register_open, name='item_register'),
+    path('order_list/',views.order_list_open, name='order_list'),
+    path('shipping_list/',views.shipping_list_open, name='shipping_list'),
 ]
