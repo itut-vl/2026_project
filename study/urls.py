@@ -24,4 +24,5 @@ urlpatterns = [
     path('item_register/',views.item_register_open, name='item_register'),
     path('order_list/',views.order_list_open, name='order_list'),
     path('shipping_list/',views.shipping_list_open, name='shipping_list'),
+    path('ajax/save_item/', views.ajax_save_item, name='ajax_save_item'),
 ]
