@@ -1,24 +1,112 @@
 {% extends 'base.html' %} {% block content %}
 <div class="container-fluid">
-  <div>
-    <p class="h3"><i class="bi bi-motherboard-fill me-2"></i>品番登録</p>
+  <div class>
+    <h1 class="h2"><i class="bi bi-motherboard-fill me-2"></i>品番登録</h1>
   </div>
   <div class="card">
+    <div class="card-header py-3">
+      <h2 class="m-0 h4">品番登録</h2>
+    </div>
     <div class="card-body row gx-5">
       <div class="col-md-6">
         <div class="mb-3">
-          <p>品番</p>
-          <input />
+          <label>品番</label>
+          <input
+            id="item_no"
+            class="form-control"
+            placeholder="品番"
+            maxlength="50"
+            type="text"
+          />
+        </div>
+        <div class="mb-3">
+          <label>品名</label>
+          <input
+            id="item_name"
+            class="form-control"
+            placeholder="品名"
+            maxlength="50"
+            type="text"
+          />
         </div>
       </div>
 
       <div class="col-md-6">
         <div class="mb-3">
-          <p>単価</p>
-          <input />
+          <label>単価</label>
+          <input
+            id="item_price"
+            class="form-control"
+            placeholder="単価"
+            maxlength="50"
+            type="number"
+          />
+        </div>
+        <div class="mb-3">
+          <label>納期</label>
+          <input
+            id="delivery_date"
+            class="form-control"
+            placeholder="納期"
+            maxlength="50"
+            type="text"
+          />
         </div>
       </div>
     </div>
-    {% endblock content %}
+    <div class="text-center py-3">
+      <button id="save_btn" class="btn btn-primary btn-lg px-5">登録</button>
+    </div>
   </div>
 </div>
+{% endblock content %} {% block extra_js %}
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie("csrftoken");
+  $("#save_btn").on("click", function () {
+    // 1. 画面の入力値を取得
+    const item_no = $("#item_no").val();
+    const item_name = $("#item_name").val();
+    const item_price = $("#item_price").val();
+    const delivery_date = $("#delivery_date").val();
+    // 2. 送るデータを作る
+    const data = {
+      item_no: item_no,
+      item_name: item_name,
+      item_price: item_price,
+      delivery_date: delivery_date,
+    };
+    // 3. Ajaxで送信
+    fetch("{% url 'ajax_save_item' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": csrftoken, // これがないとエラーになる！
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          alert("登録しました！");
+          // 入力欄をクリアするならここ
+        } else {
+          alert("エラー発生: " + data.message);
+        }
+      });
+  });
+</script>
+{% endblock extra_js %}
