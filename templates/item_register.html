@@ -61,52 +61,27 @@
 </div>
 {% endblock content %} {% block extra_js %}
 <script>
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== "") {
-      const cookies = document.cookie.split(";");
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, name.length + 1) === name + "=") {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-  const csrftoken = getCookie("csrftoken");
   $("#save_btn").on("click", function () {
-    // 1. 画面の入力値を取得
-    const item_no = $("#item_no").val();
-    const item_name = $("#item_name").val();
-    const item_price = $("#item_price").val();
-    const delivery_date = $("#delivery_date").val();
-    // 2. 送るデータを作る
-    const data = {
-      item_no: item_no,
-      item_name: item_name,
-      item_price: item_price,
-      delivery_date: delivery_date,
+    const fields = {
+      item_no: $("#item_no").val(),
+      item_name: $("#item_name").val(),
+      item_price: $("#item_price").val(),
+      delivery_date: $("#delivery_date").val(),
     };
-    // 3. Ajaxで送信
-    fetch("{% url 'ajax_save_item' %}", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-CSRFToken": csrftoken, // これがないとエラーになる！
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status === "ok") {
-          alert("登録しました！");
-          // 入力欄をクリアするならここ
-        } else {
-          alert("エラー発生: " + data.message);
-        }
-      });
+    console.log(fields);
+
+    $.ajax({
+      url: "{% url 'ajax_save_item' %}",
+      type: "POST",
+      data: fields,
+      headers: { "X-CSRFToken": "{{ csrf_token }}" },
+    }).done(function (response) {
+      if (response.status == "success") {
+        alert("成功しました" + response.message);
+      } else {
+        alert("失敗しました" + response.message);
+      }
+    });
   });
 </script>
 {% endblock extra_js %}
