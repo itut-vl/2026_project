@@ -2,12 +2,12 @@ from django.http import JsonResponse, HttpResponse
 import json
 from django.shortcuts import render
 from .models import Item
+from django.views import View
+
 
 
 def dashbord_open(request):
     return render(request, 'dashbord.html')
-
-
 
 def order_list_open(request):
     return render(request, 'order_list.html')
@@ -15,12 +15,27 @@ def order_list_open(request):
 def shipping_list_open(request):
     return render(request, 'shipping_list.html')
 
-def ajax_save_item(request):
-    if request.method =='POST':
-        
+def item_register_open(request):
+    return render(request, 'item_register.html')
+
+
+class Item_register(View):
+    def get(self, request):
+        return render(request, 'item_register.html')
+
+    def post(self, request):
+        if request.POST.get("kubun") == "save_item":
+            return self.save_item(request)
+        if request.POST.get("kubun") == "delete_item":
+            return self.delete_item(request)
+        if request.POST.get("kubun") == "get_item":
+            return self.get_item(request)
+
+    def save_item(self, request):
         item_no = request.POST.get('item_no')
         item_name = request.POST.get('item_name')
         item_price = request.POST.get('item_price')
+        item_deleted = request.POST.get('item_deleted') == 'true'
 
         if Item.objects.filter(item_no=item_no).exists():
             return JsonResponse({'status': 'error_duplicate', 'message': item_no})
@@ -29,14 +44,11 @@ def ajax_save_item(request):
             item_no = item_no,
             item_name = item_name,
             item_price = item_price,
+            item_deleted = item_deleted,
         )
         return JsonResponse({'status': 'success', 'message': item_no})
 
-    return JsonResponse({'status': 'error', 'message': item_no})
-
-def ajax_delete_item(request):
-    if request.method =='POST':
-
+    def delete_item(self, request):
         item_no = request.POST.get('item_no')
 
         if not Item.objects.filter(item_no=item_no).exists():
@@ -45,9 +57,8 @@ def ajax_delete_item(request):
         Item.objects.filter(item_no=item_no).delete()
         
         return JsonResponse({'status': 'success', 'message': item_no})
-            
-    return JsonResponse({'status': 'error', 'message': item_no})
+        
 
-def item_register_open(request):
-    items = Item.objects.all() 
-    return render(request, 'item_register.html', {'items': items})
+    def get_item(self, request):
+        items = list(Item.objects.all().values())
+        return JsonResponse({'data': items})
