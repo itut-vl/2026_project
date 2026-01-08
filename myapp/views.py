@@ -32,21 +32,18 @@ class Item_register(View):
             return self.get_item(request)
 
     def save_item(self, request):
-        item_no = request.POST.get('item_no')
-        item_name = request.POST.get('item_name')
-        item_price = request.POST.get('item_price')
-        item_deleted = request.POST.get('item_deleted') == 'true'
+        import json
+        fields = json.loads(request.POST.get('fields'))
+        print(fields)
+        items = Item(**fields)
+        print(items)
 
-        if Item.objects.filter(item_no=item_no).exists():
-            return JsonResponse({'status': 'error_duplicate', 'message': item_no})
+        if Item.objects.filter(item_no=items.item_no).exists():
+           return JsonResponse({'status': 'error_duplicate', 'message': items.item_no})
         
-        Item.objects.create(
-            item_no = item_no,
-            item_name = item_name,
-            item_price = item_price,
-            item_deleted = item_deleted,
-        )
-        return JsonResponse({'status': 'success', 'message': item_no})
+        items.save()
+
+        return JsonResponse({'status': 'success', 'message': items.item_no})
 
     def delete_item(self, request):
         item_no = request.POST.get('item_no')
