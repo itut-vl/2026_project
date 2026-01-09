@@ -146,12 +146,19 @@
         });
       console.log(fields);
 
+      for (const check in fields) {
+        if (fields[check] === "") {
+          alert("未記入の項目があります。");
+          return;
+        }
+      }
+
       $.ajax({
         url: url,
         type: "POST",
         data: {
-          fields:JSON.stringify(fields),
-          kubun:"save_item",
+          fields: JSON.stringify(fields),
+          kubun: "save_item",
         },
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       }).done(function (response) {
@@ -169,7 +176,6 @@
           //重複の場合
         } else if (response.status == "error_duplicate") {
           alert("品番" + response.message + "が重複しています。");
-
           //その他の失敗の場合
         } else {
           alert("無効なリクエストです。");
@@ -182,12 +188,14 @@
       const fields = {
         item_no: $("#item_no").val(),
       };
-      fields.kubun = "delete_item";
       console.log(fields);
       $.ajax({
         url: url,
         type: "POST",
-        data: fields,
+        data: {
+          fields: JSON.stringify(fields),
+          kubun: "delete_item",
+        },
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       }).done(function (response) {
         // 成功失敗関係なく、テーブル情報を最新にする
