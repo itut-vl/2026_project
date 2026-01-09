@@ -35,6 +35,8 @@ class Item_register(View):
         import json
         fields = json.loads(request.POST.get('fields'))
         print(fields)
+        
+
         items = Item(**fields)
         print(items)
 
@@ -46,7 +48,10 @@ class Item_register(View):
         return JsonResponse({'status': 'success', 'message': items.item_no})
 
     def delete_item(self, request):
-        item_no = request.POST.get('item_no')
+        import json
+        fields = json.loads(request.POST.get('fields'))
+
+        item_no = fields['item_no']
 
         if not Item.objects.filter(item_no=item_no).exists():
             return JsonResponse({'status':'error_nai', 'message': item_no})
