@@ -188,6 +188,10 @@
       const fields = {
         item_no: $("#item_no").val(),
       };
+      if (fields["item_no"] === "") {
+        alert("品番が選択れていません。");
+        return;
+      }
       console.log(fields);
       $.ajax({
         url: url,
