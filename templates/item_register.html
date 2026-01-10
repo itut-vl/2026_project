@@ -1,11 +1,11 @@
 {% extends 'base.html' %} {% block content %}
-<div class="container-fluid">
-  <div class>
+<div>
+  <div>
     <h1 class="h2"><i class="bi bi-motherboard-fill me-2"></i>品番登録</h1>
   </div>
   <div class="card mb-4">
     <div class="card-header py-3">
-      <h2 class="m-0 h4">品番登録</h2>
+      <h2 class="h4 m-0">品番登録</h2>
     </div>
     <div id="item_register" class="card-body row gx-5">
       <div class="col-md-6">
@@ -188,6 +188,10 @@
       const fields = {
         item_no: $("#item_no").val(),
       };
+      if (fields["item_no"] === "") {
+        alert("品番が選択れていません。");
+        return;
+      }
       console.log(fields);
       $.ajax({
         url: url,
