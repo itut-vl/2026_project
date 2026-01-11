@@ -21,7 +21,7 @@ from myapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.dashbord_open, name='dashbord'),
-    path('order_list/',views.order_list_open, name='order_list'),
+    path('order_input/',views.Order_input.as_view(), name='order_input'),
     path('shipping_list/',views.shipping_list_open, name='shipping_list'),
     path('item_register', views.Item_register.as_view(), name='item_register'),
 ]
