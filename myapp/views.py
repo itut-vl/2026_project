@@ -64,12 +64,11 @@ class Item_register(View):
 
 class Order_input(View):
     def get(self, request):
-        return render(request, 'order_input.html')
+        items = list(Item.objects.all().values())
+        return render(request, 'order_input.html',{"items": items})
 
     def post(self, request):
         if request.POST.get("kubun") == "get_item":
             return self.get_item(request)
         
-    def get_item(self, request):
-        items = list(Item.objects.all().values())
-        return JsonResponse({"items": items})
+
