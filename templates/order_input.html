@@ -11,15 +11,33 @@
       <div class="col-md-6 d-flex flex-column">
         <div class="mb-3">
           <label class="form-label">品番</label>
-          <input class="form-control w-50" />
+          <select class="form-control w-50" id="item_select">
+            <option value=""></option>
+            {% for item in items %}
+            <!-- valueに品番、表示テキストに品番と品名を出す例 -->
+            <option value="{{ item.item_no }}">
+              {{ item.item_no }}
+            </option>
+            {% endfor %}
+          </select>
         </div>
         <div>
           <label class="form-label">品名</label>
           <input class="form-control w-50" />
         </div>
       </div>
-        <div class="col-md-6 d-flex flex-column"></div>
+      <div class="col-md-6 d-flex flex-column"></div>
       {% endblock content%}
     </div>
   </div>
 </div>
+<script>
+  $(document).ready(function () {
+    url = "{% url 'order_input' %}";
+    $("item_select").select2({
+      width: "100%",
+      placeholder: "品番を選択してください",
+      allowClear: true,
+    });
+  });
+</script>
