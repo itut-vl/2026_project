@@ -5,12 +5,8 @@ from .models import Item
 from django.views import View
 
 
-
 def dashbord_open(request):
     return render(request, 'dashbord.html')
-
-def order_list_open(request):
-    return render(request, 'order_list.html')
 
 def shipping_list_open(request):
     return render(request, 'shipping_list.html')
@@ -64,3 +60,16 @@ class Item_register(View):
     def get_item(self, request):
         items = list(Item.objects.all().values())
         return JsonResponse({'data': items})
+
+
+class Order_input(View):
+    def get(self, request):
+        return render(request, 'order_input.html')
+
+    def post(self, request):
+        if request.POST.get("kubun") == "get_item":
+            return self.get_item(request)
+        
+    def get_item(self, request):
+        items = list(Item.objects.all().values())
+        return JsonResponse({"items": items})
