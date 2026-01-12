@@ -31,13 +31,15 @@
     </div>
   </div>
 </div>
+{% endblock content%} {% block extra_js %}
 <script>
   $(document).ready(function () {
     url = "{% url 'order_input' %}";
-    $("item_select").select2({
-      width: "100%",
+      $("#item_select").select2({
       placeholder: "品番を選択してください",
       allowClear: true,
+        theme: "bootstrap-5",
     });
   });
 </script>
+  {% endblock extra_js %}
