@@ -7,7 +7,7 @@
     <div class="card-header py-3">
       <h2 class="h4 m-0">受注入力</h2>
     </div>
-    <div class="card-body row">
+    <div id="order_input" class="card-body row">
       <div class="col-md-6 d-flex flex-column gap-3">
         <div class="mb-3">
           <div>
@@ -63,17 +63,51 @@
       <button id="order_btn" class="btn btn-primary btn-lg px-5">受注</button>
     </div>
   </div>
-  {% endblock content%} {% block extra_js %}
-  <script>
-    $(document).ready(function () {
-      url = "{% url 'order_input' %}";
-      $("#item-no").select2({
-        placeholder: "品番を選択してください",
-        allowClear: true,
-        theme: "bootstrap-5",
-        width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
+</div>
+
+{% endblock content%} {% block extra_js %}
+<script>
+  $(document).ready(function () {
+    const url = "{% url 'order_input' %}";
+    $("#item-no").select2({
+      placeholder: "品番を選択してください",
+      allowClear: true,
+      theme: "bootstrap-5",
+      width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
+    });
+    $("#order_btn").on("click", function () {
+      let fields = {};
+
+      $("#order_input")
+        .find("input, select")
+        .each(function () {
+          switch ($(this).attr("type")) {
+            case "checkbox":
+              fields[$(this).data("id")] = $(this).prop("checked");
+              break;
+            default:
+              fields[$(this).data("id")] = $(this).val();
+          }
+        });
+      console.log(fields);
+
+      for (const check in fields) {
+        if (fields[check] === "") {
+          alert("未記入の項目があります。");
+          return;
+        }
+      }
+
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          fields: JSON.stringify(fields),
+          kubun: "save_order",
+        },
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
       });
     });
-  </script>
-  {% endblock extra_js %}
-</div>
+  });
+</script>
+{% endblock extra_js %}
