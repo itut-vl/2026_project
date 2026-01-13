@@ -8,38 +8,72 @@
       <h2 class="h4 m-0">受注入力</h2>
     </div>
     <div class="card-body row">
-      <div class="col-md-6 d-flex flex-column">
+      <div class="col-md-6 d-flex flex-column gap-3">
         <div class="mb-3">
-          <label class="form-label">品番</label>
-          <select class="form-control w-50" id="item_select">
-            <option value=""></option>
-            {% for item in items %}
-            <!-- valueに品番、表示テキストに品番と品名を出す例 -->
-            <option value="{{ item.item_no }}">
-              {{ item.item_no }}
-            </option>
-            {% endfor %}
-          </select>
+          <div>
+            <label class="form-label">品番</label>
+          </div>
+          <div>
+            <select class="w-100" id="item-no" data-id="item-no" type="number">
+              <option value=""></option>
+              {% for item in items %}
+              <option value="{{ item.item_no }}">{{ item.item_no }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
-        <div>
+        <div class="mb-3">
           <label class="form-label">品名</label>
-          <input class="form-control w-50" />
+          <input
+            class="form-control w-100"
+            id="item-name"
+            data-id="item-name"
+            type="text"
+            placeholder="品名"
+          />
         </div>
       </div>
-      <div class="col-md-6 d-flex flex-column"></div>
-      {% endblock content%}
+      <div class="col-md-6 d-flex flex-column gap-3">
+        <div class="mb-3">
+          <label class="form-label">単価</label>
+          <input
+            class="form-control w-100"
+            id="item-price"
+            data-id="item-price"
+            type="number"
+            placeholder="単価"
+          />
+        </div>
+        <div class="content h-50 d-flex align-items-center">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="provisional_order"
+              data-id="provisional_order"
+            />
+            <label class="form-check-label" for="provisional_order">
+              仮受注
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center">
+      <button id="order_btn" class="btn btn-primary btn-lg px-5">受注</button>
     </div>
   </div>
-</div>
-{% endblock content%} {% block extra_js %}
-<script>
-  $(document).ready(function () {
-    url = "{% url 'order_input' %}";
-      $("#item_select").select2({
-      placeholder: "品番を選択してください",
-      allowClear: true,
+  {% endblock content%} {% block extra_js %}
+  <script>
+    $(document).ready(function () {
+      url = "{% url 'order_input' %}";
+      $("#item-no").select2({
+        placeholder: "品番を選択してください",
+        allowClear: true,
         theme: "bootstrap-5",
+        width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
+      });
     });
-  });
-</script>
+  </script>
   {% endblock extra_js %}
+</div>
