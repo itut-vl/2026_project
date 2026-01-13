@@ -63,17 +63,18 @@
       <button id="order_btn" class="btn btn-primary btn-lg px-5">受注</button>
     </div>
   </div>
-  {% endblock content%} {% block extra_js %}
-  <script>
-    $(document).ready(function () {
-      url = "{% url 'order_input' %}";
-      $("#item-no").select2({
-        placeholder: "品番を選択してください",
-        allowClear: true,
-        theme: "bootstrap-5",
-        width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
-      });
-    });
-  </script>
-  {% endblock extra_js %}
 </div>
+
+{% endblock content%} {% block extra_js %}
+<script>
+  $(document).ready(function () {
+    url = "{% url 'order_input' %}";
+    $("#item-no").select2({
+      placeholder: "品番を選択してください",
+      allowClear: true,
+      theme: "bootstrap-5",
+      width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
+    });
+  });
+</script>
+{% endblock extra_js %}
