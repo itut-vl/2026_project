@@ -1,8 +1,9 @@
 from django.http import JsonResponse, HttpResponse
 import json
 from django.shortcuts import render
-from .models import Item
+from .models import Item, Order
 from django.views import View
+import json
 
 
 def dashbord_open(request):
@@ -28,10 +29,8 @@ class Item_register(View):
             return self.get_item(request)
 
     def save_item(self, request):
-        import json
         fields = json.loads(request.POST.get('fields'))
         print(fields)
-        
 
         items = Item(**fields)
         print(items)
@@ -70,5 +69,18 @@ class Order_input(View):
     def post(self, request):
         if request.POST.get("kubun") == "get_item":
             return self.get_item(request)
-        
+        if request.POST.get("kubun") == "save_order":
+            return self.save_order(request)
 
+    def save_order(self,request):
+        fields = json.loads(request.POST.get('fields'))
+        print(fields)
+
+        orders = Order(**fields)
+
+        if Order.objects.filter(order_no=orders.order_no).exists():
+           return JsonResponse({'status': 'error_duplicate', 'message': orders.order_no})
+        
+        orders.save()
+
+        return JsonResponse({'status': 'success', 'message': orders.order_no})

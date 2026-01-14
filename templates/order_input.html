@@ -14,7 +14,7 @@
             <label class="form-label">品番</label>
           </div>
           <div>
-            <select class="w-100" id="item-no" data-id="item-no" type="number">
+            <select class="w-100" id="item_no" data-id="item_no" type="number">
               <option value=""></option>
               {% for item in items %}
               <option value="{{ item.item_no }}">{{ item.item_no }}</option>
@@ -26,8 +26,8 @@
           <label class="form-label">品名</label>
           <input
             class="form-control w-100"
-            id="item-name"
-            data-id="item-name"
+            id="item_name"
+            data-id="item_name"
             type="text"
             placeholder="品名"
           />
@@ -51,8 +51,8 @@
           <label class="form-label">単価</label>
           <input
             class="form-control w-100"
-            id="item-price"
-            data-id="item-price"
+            id="item_price"
+            data-id="item_price"
             type="number"
             placeholder="単価"
           />
@@ -79,7 +79,7 @@
 <script>
   $(document).ready(function () {
     const url = "{% url 'order_input' %}";
-    $("#item-no").select2({
+    $("#item_no").select2({
       placeholder: "品番を選択してください",
       allowClear: true,
       theme: "bootstrap-5",
@@ -116,6 +116,16 @@
           kubun: "save_order",
         },
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      }).done(function (response) {
+        if (response.status == "success") {
+          alert("品番" + response.message + "の登録に成功しました。");
+          //重複の場合
+        } else if (response.status == "error_duplicate") {
+          alert("品番" + response.message + "が重複しています。");
+          //その他の失敗の場合
+        } else {
+          alert("無効なリクエストです。");
+        }
       });
     });
   });
