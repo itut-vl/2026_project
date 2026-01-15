@@ -118,6 +118,20 @@
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       }).done(function (response) {
         if (response.status == "success") {
+          $("#order_input")
+            .find("input, select")
+            .each(function () {
+              switch ($(this).data("id")) {
+                case "provisional_order":
+                  $(this).prop("checked", false);
+                  break;
+                case "item_no":
+                  $(this).val("").trigger("change");
+                  break;
+                default:
+                  $(this).val("");
+              }
+            });
           alert("品番" + response.message + "の登録に成功しました。");
           //重複の場合
         } else if (response.status == "error_duplicate") {
