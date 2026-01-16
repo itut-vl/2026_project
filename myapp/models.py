@@ -11,6 +11,6 @@ class Item(models.Model):
 class Order(models.Model):
     item_name = models.CharField(max_length=50)
     item_no = models.CharField(max_length=50)
-    item_price =  models.IntegerField()
+    order_price =  models.IntegerField()
     order_no = models.CharField(max_length=50)
     provisional_order = models.BooleanField(default=False)

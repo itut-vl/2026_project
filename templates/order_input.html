@@ -3,7 +3,7 @@
   <div>
     <h1 class="h2"><i class="bi bi-list-ul me-2"></i>受注入力</h1>
   </div>
-  <div class="card">
+  <div class="card mb-4">
     <div class="card-header py-3">
       <h2 class="h4 m-0">受注入力</h2>
     </div>
@@ -51,8 +51,8 @@
           <label class="form-label">単価</label>
           <input
             class="form-control w-100"
-            id="item_price"
-            data-id="item_price"
+            id="order_price"
+            data-id="order_price"
             type="number"
             placeholder="単価"
           />
@@ -73,18 +73,84 @@
       <button id="order_btn" class="btn btn-primary btn-lg px-5">受注</button>
     </div>
   </div>
+  <div class="card">
+    <div class="card-header py-3">
+      <h2 class="m-0 h4">品番一覧</h2>
+    </div>
+    <div class="card-body">
+      <table
+        id="item_table"
+        class="table table-dark table-striped table-hover w-100"
+      >
+        <thead>
+          <tr>
+            <th>品番</th>
+            <th>品名</th>
+            <th>単価</th>
+            <th>注文番号</th>
+            <th>仮受注</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{ order.item_no }}</td>
+            <td>{{ order.item_name }}</td>
+            <td>{{ order.order_price }}</td>
+            <td>{{ order.order_no }}</td>
+            <td>{{ order.provisional_order }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-{% endblock content%} {% block extra_js %}
+{% endblock content %} {% block extra_js %}
 <script>
   $(document).ready(function () {
     const url = "{% url 'order_input' %}";
+    //テーブルの準備
+    const table = new DataTable("#item_table", {
+      ajax: {
+        url: url,
+        type: "POST",
+        data: {
+          kubun: "get_item",
+        },
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      },
+      columns: [
+        { data: "item_no" },
+        { data: "item_name" },
+        { data: "order_price" },
+        { data: "order_no" },
+        {
+          data: "provisional_order",
+          className: "text-center",
+          render: function (data) {
+            switch (data) {
+              case true:
+                return '<i class="bi bi-check-lg"></i>';
+              default:
+                return "";
+            }
+          },
+        },
+      ],
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/ja.json",
+      },
+    });
+    //セレクト2を使用する
     $("#item_no").select2({
       placeholder: "品番を選択してください",
       allowClear: true,
       theme: "bootstrap-5",
-      width: "100%", //これつけると親要素に合わせて100%幅になるから動的に対応できる。
+      width: "100%",
     });
+    //受注ボタンをクリックした時の処理
     $("#order_btn").on("click", function () {
       let fields = {};
 
@@ -118,6 +184,7 @@
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       }).done(function (response) {
         if (response.status == "success") {
+          table.ajax.reload();
           $("#order_input")
             .find("input, select")
             .each(function () {
