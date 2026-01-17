@@ -25,7 +25,7 @@
         <tbody>
           {% for shipping in shippings %}
           <tr>
-            <td>{{ shipping.shipping_data }}</td>
+            <td>{{ shipping.shipping_date }}</td>
             <td>{{ shipping.item_no }}</td>
             <td>{{ shipping.item_name }}</td>
             <td>{{ shipping.order_no }}</td>
@@ -53,7 +53,7 @@
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       },
       columns: [
-        { data: "shipping_data" },
+        { data: "shipping_date" },
         { data: "item_no" },
         { data: "item_name" },
         { data: "order_no" },
