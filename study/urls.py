@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.dashbord_open, name='dashbord'),
     path('order_input/',views.Order_input.as_view(), name='order_input'),
-    path('shipping_list/',views.shipping_list_open, name='shipping_list'),
     path('item_register', views.Item_register.as_view(), name='item_register'),
+    path('shipping_list/',views.Shipping_list.as_view(), name='shipping_list'),
+
 ]

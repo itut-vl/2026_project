@@ -1,7 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 import json
 from django.shortcuts import render
-from .models import Item, Order
+from .models import Item, Order,Shipping
 from django.views import View
 import json
 
@@ -9,8 +9,7 @@ import json
 def dashbord_open(request):
     return render(request, 'dashbord.html')
 
-def shipping_list_open(request):
-    return render(request, 'shipping_list.html')
+
 
 def item_register_open(request):
     return render(request, 'item_register.html')
@@ -88,3 +87,16 @@ class Order_input(View):
     def get_item(self,request):
         orders = list(Order.objects.all().values())
         return JsonResponse({"data": orders})
+
+class Shipping_list(View):
+    def get(self,request):
+        return render(request, 'shipping_list.html')
+    
+    def post(self,request):
+        if request.POST.get("kubun")== "get_item":
+            return self.get_item(request)
+
+    def get_item(self,request):
+        shippings = list(Shipping.objects.all().values())
+        return JsonResponse({'data':shippings})
+
