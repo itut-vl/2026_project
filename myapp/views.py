@@ -71,8 +71,6 @@ class Order_input(View):
             return self.get_item(request)
         if request.POST.get("kubun") == "save_order":
             return self.save_order(request)
-        if request.POST.get("kubun") == "get_item":
-            return self.get_item(request)
 
     def save_order(self,request):
         fields = json.loads(request.POST.get('fields'))
