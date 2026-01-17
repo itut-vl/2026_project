@@ -1,5 +1,5 @@
 {% extends "base.html" %}{% block content %}
-<div class>
+<div>
   <div>
     <h1 class="h2"><i class="bi bi-list-ul me-2"></i>受注入力</h1>
   </div>
@@ -79,7 +79,7 @@
     </div>
     <div class="card-body">
       <table
-        id="item_table"
+        id="order_table"
         class="table table-dark table-striped table-hover w-100"
       >
         <thead>
@@ -112,7 +112,7 @@
   $(document).ready(function () {
     const url = "{% url 'order_input' %}";
     //テーブルの準備
-    const table = new DataTable("#item_table", {
+    const table = new DataTable("#order_table", {
       ajax: {
         url: url,
         type: "POST",
