@@ -114,10 +114,10 @@
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       },
       columns: [
-        { data: "item_no" },
-        { data: "item_name" },
-        { data: "order_price" },
-        { data: "order_no" },
+        { data: "item_no", className: "text-start" },
+        { data: "item_name", className: "text-start" },
+        { data: "order_price", className: "text-start" },
+        { data: "order_no", className: "text-start" },
         {
           data: "provisional_order",
           className: "text-center",
