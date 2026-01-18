@@ -101,12 +101,12 @@
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       },
       columns: [
-        { data: "item_no", className: "text-start" },
-        { data: "item_name", className: "text-start" },
-        { data: "item_price", className: "text-start" },
+        { data: "item_no", className: "text-start item_register_table_tr" },
+        { data: "item_name", className: "text-start item_register_table_tr" },
+        { data: "item_price", className: "text-start item_register_table_tr" },
         {
-          data: "item_deleted",
-          className: "text-center",
+          data: "item_deleted ",
+          className: "text-center item_register_table_tr",
           render: function (data) {
             switch (data) {
               case true:
@@ -119,6 +119,30 @@
       ],
       language: {
         url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/ja.json",
+      },
+    });
+
+    $.contextMenu({
+      selector: ".item_register_table_tr",
+      items: {
+        edit: { name: "編集", icon: "edit" },
+        delete: { name: "削除", icon: "delete" },
+        sep1: "---------",
+        quit: { name: "閉じる", icon: "quit" },
+      },
+
+      callback: function (key, options) {
+        if (key === "edit") {
+          const tr = options.$trigger;
+          const data = table.row(tr).data();
+          const item_no = data.item_no;
+
+          
+        } else if (key === "delete") {
+          const tr = options.$trigger;
+          const data = table.row(tr).data();
+          const item_no = data.item_no;
+        }
       },
     });
 
