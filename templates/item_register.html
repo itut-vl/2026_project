@@ -68,10 +68,7 @@
       <h2 class="m-0 h4">品番一覧</h2>
     </div>
     <div class="card-body">
-      <table
-        id="item_table"
-        class="table table-striped table-hover w-100"
-      >
+      <table id="item_table" class="table table-striped table-hover w-100">
         <thead>
           <tr>
             <th>品番</th>
@@ -123,6 +120,7 @@
       },
     });
 
+    //コンテキストメニューの処理
     $.contextMenu({
       selector: ".item_register_table_tr",
       items: {
@@ -130,7 +128,7 @@
         delete: { name: "削除", icon: "delete" },
         sep1: "---------",
         quit: { name: "閉じる", icon: "quit" },
-      },
+       }, 
 
       callback: function (key, options) {
         if (key === "edit") {
@@ -138,6 +136,11 @@
           const data = table.row(tr).data();
           const item_no = data.item_no;
           $("#editModal").modal("show");
+
+
+
+
+
         } else if (key === "delete") {
           const tr = options.$trigger;
           const data = table.row(tr).data();
@@ -206,8 +209,8 @@
         item_no: $("#item_no").val(),
       };
       if (fields["item_no"] === "") {
-        alert("品番が選択れていません。");
         return;
+        alert("品番が選択れていません。");
       }
       console.log(fields);
       $.ajax({
@@ -234,6 +237,14 @@
           alert("無効なリクエストです。");
         }
       });
+    });
+
+    //モーダル内の処理
+    $("#close_edit_btn").on("click", function () {
+      $("#editModal").modal("hide");
+    });
+    $("#editModal .btn-close").on("click", function () {
+      $("#editModal").modal("hide");
     });
   });
 </script>
