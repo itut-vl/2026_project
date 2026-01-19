@@ -128,7 +128,7 @@
         delete: { name: "削除", icon: "delete" },
         sep1: "---------",
         quit: { name: "閉じる", icon: "quit" },
-       }, 
+      },
 
       callback: function (key, options) {
         if (key === "edit") {
@@ -136,11 +136,6 @@
           const data = table.row(tr).data();
           const item_no = data.item_no;
           $("#editModal").modal("show");
-
-
-
-
-
         } else if (key === "delete") {
           const tr = options.$trigger;
           const data = table.row(tr).data();
@@ -245,6 +240,14 @@
     });
     $("#editModal .btn-close").on("click", function () {
       $("#editModal").modal("hide");
+    });
+
+    //セレクト2を使用する
+    $("#reg_modal_item_no").select2({
+      placeholder: "品番を選択してください",
+      allowClear: true,
+      theme: "bootstrap-5",
+      width: "75%",
     });
   });
 </script>

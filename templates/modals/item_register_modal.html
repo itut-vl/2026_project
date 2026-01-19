@@ -10,9 +10,16 @@
         <div class="row">
           <div class="col-md-6">
             <div class="ms-3 mb-3">
-              <div class="w-75">
-                <label>品番</label>
-                <input class="form-control" />
+              <div>
+                <label class="form-label">品番</label>
+              </div>
+              <div>
+                <select class="w-75" id="reg_modal_item_no" type="number">
+                  <option value=""></option>
+                  {% for item in items %}
+                  <option value="{{ item.item_no }}">{{ item.item_no }}</option>
+                  {% endfor %}
+                </select>
               </div>
             </div>
             <div class="ms-3 mb-3">

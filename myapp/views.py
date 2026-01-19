@@ -17,7 +17,8 @@ def item_register_open(request):
 
 class Item_register(View):
     def get(self, request):
-        return render(request, 'item_register.html')
+        items = list(Item.objects.all().values())
+        return render(request, 'item_register.html',{"items" : items})
 
     def post(self, request):
         if request.POST.get("kubun") == "save_item":
@@ -35,7 +36,7 @@ class Item_register(View):
         print(items)
 
         if Item.objects.filter(item_no=items.item_no).exists():
-           return JsonResponse({'status': 'error_duplicate', 'message': items.item_no})
+            return JsonResponse({'status': 'error_duplicate', 'message': items.item_no})
         
         items.save()
 
@@ -78,7 +79,7 @@ class Order_input(View):
         orders = Order(**fields)
 
         if Order.objects.filter(order_no=orders.order_no).exists():
-           return JsonResponse({'status': 'error_duplicate', 'message': orders.order_no})
+            return JsonResponse({'status': 'error_duplicate', 'message': orders.order_no})
         
         orders.save()
 
