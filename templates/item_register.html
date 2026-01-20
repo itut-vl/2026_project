@@ -248,6 +248,7 @@
       allowClear: true,
       theme: "bootstrap-5",
       width: "75%",
+      dropdownParent: $("#editModal"),
     });
 
     // モーダルの登録ボタンをクリック時の処理
@@ -274,6 +275,7 @@
         },
         headers: { "X-CSRFToken": "{{ csrf_token }}" },
       }).done(function (response) {
+        table.ajax.reload();
         if (response.status === "success") {
           alert("編集に成功しました");
         } else {
