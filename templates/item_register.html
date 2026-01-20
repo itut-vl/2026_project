@@ -249,6 +249,38 @@
       theme: "bootstrap-5",
       width: "75%",
     });
+
+    // モーダルの登録ボタンをクリック時の処理
+    $("#save_edit_btn").on("click", function () {
+      let fields = {};
+      $("#editModal")
+        .find("input, select")
+        .each(function () {
+          switch ($(this).attr("type")) {
+            case "checkbox":
+              fields[$(this).data("id")] = $(this).prop("checked");
+              break;
+            default:
+              fields[$(this).data("id")] = $(this).val();
+          }
+        });
+      console.log(fields);
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          fields: JSON.stringify(fields),
+          kubun: "edit_item",
+        },
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      }).done(function (response) {
+        if (response.status === "success") {
+          alert("編集に成功しました");
+        } else {
+          alert("編集に失敗しました");
+        }
+      });
+    });
   });
 </script>
 {% endblock extra_js %}

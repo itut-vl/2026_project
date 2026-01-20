@@ -27,6 +27,8 @@ class Item_register(View):
             return self.delete_item(request)
         if request.POST.get("kubun") == "get_item":
             return self.get_item(request)
+        if request.POST.get("kubun") == "edit_item":
+            return self.edit_item(request)
 
     def save_item(self, request):
         fields = json.loads(request.POST.get('fields'))
@@ -55,10 +57,20 @@ class Item_register(View):
         
         return JsonResponse({'status': 'success', 'message': item_no})
         
-
     def get_item(self, request):
         items = list(Item.objects.all().values())
         return JsonResponse({'data': items})
+
+    def edit_item(self, request):
+        fields = json.loads(request.POST.get("fields"))
+
+        items = Item(**fields)
+
+        if Item.objects.filter(item_no=items.item_no).update(**fields):
+            return JsonResponse({"status":"success"})
+        
+        return JsonResponse({"status":"error"})
+
 
 
 class Order_input(View):
