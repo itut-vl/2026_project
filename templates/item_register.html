@@ -136,6 +136,31 @@
           const data = table.row(tr).data();
           const item_no = data.item_no;
           $("#editModal").modal("show");
+          const edit_data_id = [];
+          $("#editModal")
+            .find("input, select")
+            .each(function () {
+              edit_data_id.push($(this).data("id"));
+            });
+          $("#editModal")
+            .find("input, select")
+            .each(function () {
+              switch ($(this).data("id")) {
+                case "item_name":
+                  $(this).val(data.item_name);
+                  break;
+                case "item_price":
+                  $(this).val(data.item_price);
+                  break;
+                case "item_deleted":
+                  $(this).prop("checked", data.item_deleted);
+                  break;
+                case "item_no":
+                  $(this).val(data.item_no).trigger("change");
+                  break;
+              }
+            });
+          console.log(edit_data_id);
         } else if (key === "delete") {
           const tr = options.$trigger;
           const data = table.row(tr).data();
