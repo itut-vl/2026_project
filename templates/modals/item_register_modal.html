@@ -11,10 +11,15 @@
           <div class="col-md-6">
             <div class="ms-3 mb-3">
               <div>
-                <label class="form-label">品番</label>
+                <label class="form-label mb-0">品番</label>
               </div>
               <div>
-                <select class="w-75" id="reg_modal_item_no" type="number">
+                <select
+                  class="w-75"
+                  id="reg_modal_item_no"
+                  type="number"
+                  data-id="item_no"
+                >
                   <option value=""></option>
                   {% for item in items %}
                   <option value="{{ item.item_no }}">{{ item.item_no }}</option>
@@ -25,7 +30,7 @@
             <div class="ms-3 mb-3">
               <div class="w-75">
                 <label>品名</label>
-                <input class="form-control" />
+                <input class="form-control" data-id="item_name" />
               </div>
             </div>
           </div>
@@ -33,7 +38,7 @@
             <div class="ms-3 mb-3">
               <div class="w-75">
                 <label>単価</label>
-                <input class="form-control" />
+                <input class="form-control" data-id="item_price" />
               </div>
             </div>
             <div class="mb-3 ms-3 content h-50 d-flex align-items-center">
