@@ -1,0 +1,42 @@
+<!-- 削除用用モーダル -->
+<style>
+  #item-deleteModal {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  #item-deleteModal .Modal-content {
+    background-color: rgb(255, 255, 255);
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    border-radius: 15px;
+    border: 2px solid black;
+  }
+</style>
+
+<div class="" id="item-deleteModal">
+  <div class="Modal-content">
+    <div class="card h-100">
+      <div
+        class="card-header d-flex justify-content-between align-items-center"
+      >
+        <h2 class="h4">削除</h2>
+        <button type="button" class="exit"></button>
+      </div>
+      <div class="card-body">
+        <div>
+          <button class="btn-danger btn px-5">削除</button>
+          <button class="btn-secondary btn px-5 px-5">キャンセル</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

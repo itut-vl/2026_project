@@ -85,7 +85,7 @@
   </div>
 </div>
 <!-- prettier-ignore -->
-{% include 'modals/item_register_modal.html' %} {% endblock content %} {% block extra_js %}
+{% include 'modals/item_register_modal.html' %} {% include 'modals/item_delete_modal.html' %} {% endblock content %} {% block extra_js %}
 <script>
   $(document).ready(function () {
     const url = "{% url 'item_register' %}";
@@ -165,6 +165,7 @@
           const tr = options.$trigger;
           const data = table.row(tr).data();
           const item_no = data.item_no;
+          $("#item-deleteModal").css("display", "flex");
         }
       },
     });
@@ -259,12 +260,18 @@
       });
     });
 
-    //モーダル内の処理
+    //編集モーダル内の処理
     $("#close_edit_btn").on("click", function () {
       $("#editModal").modal("hide");
     });
     $("#editModal .btn-close").on("click", function () {
       $("#editModal").modal("hide");
+    });
+
+    //削除モーダル内の処理
+    //この削除処理は仮のものです。
+    $(".exit").on("click", function () {
+      $("#item-deleteModal").css("display", "none");
     });
 
     //セレクト2を使用する
