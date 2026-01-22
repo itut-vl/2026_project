@@ -27,7 +27,6 @@ class Item_register(View):
 
     def save_item(self, request):
         fields = json.loads(request.POST.get('fields'))
-        print(fields)
 
         items = Item(**fields)
         if Item.objects.filter(item_no=items.item_no).exists():
