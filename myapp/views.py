@@ -30,6 +30,7 @@ class Item_register(View):
         print(fields)
 
         items = Item(**fields)
+        
         print(items)
 
         if Item.objects.filter(item_no=items.item_no).exists():
