@@ -10,11 +10,6 @@ def dashbord_open(request):
     return render(request, 'dashbord.html')
 
 
-
-def item_register_open(request):
-    return render(request, 'item_register.html')
-
-
 class Item_register(View):
     def get(self, request):
         items = list(Item.objects.all().values())

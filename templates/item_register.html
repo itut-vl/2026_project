@@ -88,6 +88,7 @@
 {% include 'modals/item_register_modal.html' %} {% include 'modals/item_delete_modal.html' %} {% endblock content %} {% block extra_js %}
 <script>
   $(document).ready(function () {
+    let delete_item_no = {};
     const url = "{% url 'item_register' %}";
     const table = new DataTable("#item_table", {
       ajax: {
@@ -164,7 +165,8 @@
         } else if (key === "delete") {
           const tr = options.$trigger;
           const data = table.row(tr).data();
-          const item_no = data.item_no;
+          delete_item_no["item_no"] = data.item_no;
+          console.log(delete_item_no);
           $("#item-deleteModal").css("display", "flex");
         }
       },
@@ -312,6 +314,28 @@
           alert("編集に成功しました");
         } else {
           alert("編集に失敗しました");
+        }
+      });
+    });
+
+    // 削除モーダルで削除をクリックしたとき
+
+    $("#delete-item-btn").on("click", function () {
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          fields: JSON.stringify(delete_item_no),
+          kubun: "delete_item",
+        },
+        headers: { "X-CSRFToken": "{{ csrf_token }}" },
+      }).done(function (response) {
+        table.ajax.reload();
+        $("#item-deleteModal").css("display", "none");
+        if (response.status === "success") {
+          alert("削除しました。");
+        } else {
+          alert("削除に失敗しました。");
         }
       });
     });
