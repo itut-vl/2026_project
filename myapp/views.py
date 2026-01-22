@@ -32,6 +32,8 @@ class Item_register(View):
         if Item.objects.filter(item_no=items.item_no).exists():
             return JsonResponse({'status': 'error_duplicate', 'message': items.item_no})
         
+
+        
         items.save()
 
         return JsonResponse({'status': 'success', 'message': items.item_no})
