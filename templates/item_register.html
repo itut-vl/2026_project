@@ -312,6 +312,7 @@
         table.ajax.reload();
         if (response.status === "success") {
           alert("編集に成功しました");
+          $("#editModal").modal("hide");
         } else {
           alert("編集に失敗しました");
         }
